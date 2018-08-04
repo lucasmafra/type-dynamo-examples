@@ -1,0 +1,47 @@
+service:
+  name: aws-nodejs-typescript
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  createTodo:
+    handler: src/api/handlers.createTodo
+    events:
+      - http:
+          method: post
+          path: todo
+  getTodos:
+      handler: src/api/handlers.getTodos
+      events:
+        - http:
+            method: get
+            path: todo
+
+resources:
+  Resources:
+    TodoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TodoTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+custom:
+  dynamodb:
+    start:
+      migrate: true
