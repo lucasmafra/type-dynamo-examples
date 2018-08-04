@@ -12,7 +12,7 @@ export const createTodo: Handler = async (event: APIGatewayEvent) => {
 
 export const getTodos: Handler = async () => {
   const { data: todos } = await TodoRepository.find().allResults().execute()
-  return buildResponse(200, undefined, todos )
+  return buildResponse(200, undefined, todos)
 }
 
 export const updateTodo: Handler = async (event: APIGatewayEvent) => {
