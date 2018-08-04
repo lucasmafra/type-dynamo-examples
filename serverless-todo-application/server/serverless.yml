@@ -24,12 +24,18 @@ functions:
         - http:
             method: get
             path: todo
-  updateTodos:
+  updateTodo:
         handler: src/api/handlers.updateTodo
         events:
           - http:
               method: patch
               path: todo/{id}
+  deleteTodo:
+          handler: src/api/handlers.deleteTodo
+          events:
+            - http:
+                method: delete
+                path: todo/{id}
 
 resources:
   Resources:

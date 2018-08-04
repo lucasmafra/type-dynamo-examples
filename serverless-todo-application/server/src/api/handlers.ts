@@ -20,3 +20,9 @@ export const updateTodo: Handler = async (event: APIGatewayEvent) => {
   const { data: todo } = await TodoRepository.update({ id, status }).execute()
   return buildResponse(200, 'Todo updated with success!', todo)
 }
+
+export const deleteTodo: Handler = async (event: APIGatewayEvent) => {
+    const id = event.pathParameters['id']
+    const { data: todo } = await TodoRepository.delete({ id }).execute()
+    return buildResponse(200, 'Todo deleted with success!', todo)
+}
