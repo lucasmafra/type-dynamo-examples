@@ -13,3 +13,10 @@ export const getTodos: Handler = async () => {
   const { data: todos } = await TodoRepository.find().allResults().execute()
   return buildResponse(200, undefined, todos )
 }
+
+export const updateTodo: Handler = async (event: APIGatewayEvent) => {
+  const id = event.pathParameters['id']
+  const { status } = JSON.parse(event.body)
+  const { data: todo } = await TodoRepository.update({ id, status }).execute()
+  return buildResponse(200, 'Todo updated with success!', todo)
+}
