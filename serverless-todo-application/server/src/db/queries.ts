@@ -1,13 +1,10 @@
 import { Todo } from '../models/todo'
-import { isEqualTo, match } from 'type-dynamo/dist/expressions'
 import { TodoRepository } from './todo'
-import { Omit } from 'type-dynamo/dist/helpers'
 import { v4 as generateId } from 'uuid'
+import { isEqualTo, match, Omit } from 'type-dynamo'
 
-export const saveTodo = async ({ title, completed }: Omit<Todo, 'id'>) => {
-    const { data: todo } = await TodoRepository.save({
-        id: generateId(), title, completed
-    }).execute()
+export const saveTodo = async (input: Omit<Todo, 'id'>) => {
+    const { data: todo } = await TodoRepository.save({ id: generateId(), ...input }).execute()
     return todo
 }
 

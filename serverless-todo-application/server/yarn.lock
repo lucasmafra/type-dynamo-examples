@@ -2925,9 +2925,9 @@ tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
 
-type-dynamo@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/type-dynamo/-/type-dynamo-0.0.9.tgz#e4751ad9429060b175b6093b98995c733de4da99"
+type-dynamo@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/type-dynamo/-/type-dynamo-0.1.1.tgz#3b3f7191e8896ff94213051dfbf0c1c4219556b6"
   dependencies:
     amazon-dax-client "^1.0.2"
     aws-sdk "git+https://git@github.com/lucasmafra/aws-sdk-js.git"
