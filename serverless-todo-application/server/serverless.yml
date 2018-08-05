@@ -25,36 +25,48 @@ functions:
       - http:
           method: post
           path: todo
+          cors:
+            origin: '*'
   getTodos:
       handler: src/api/handlers.getTodos
       events:
         - http:
             method: get
             path: todo
+            cors:
+              origin: '*'
   updateTodo:
         handler: src/api/handlers.updateTodo
         events:
           - http:
               method: put
               path: todo/{id}
+              cors:
+                origin: '*'
   deleteTodo:
           handler: src/api/handlers.deleteTodo
           events:
             - http:
                 method: delete
                 path: todo/{id}
+                cors:
+                  origin: '*'
   toggleAllTodos:
           handler: src/api/handlers.toggleAllTodos
           events:
             - http:
                 method: put
                 path: todo/toggleAll
+                cors:
+                  origin: '*'
   deleteCompletedTodos:
             handler: src/api/handlers.deleteCompletedTodos
             events:
               - http:
                   method: delete
                   path: todo/completed
+                  cors:
+                    origin: '*'
 
 resources:
   Resources:

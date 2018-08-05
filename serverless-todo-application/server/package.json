@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/aws-lambda": "8.10.1",
     "@types/node": "^8.0.57",
+    "serverless-domain-manager": "^2.6.0",
     "serverless-dynamodb-local": "^0.2.30",
     "serverless-offline": "^3.25.6",
     "serverless-webpack": "^5.1.1",
