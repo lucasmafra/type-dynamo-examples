@@ -7,7 +7,8 @@
     "rules": {
         "semicolon": [true, "never"],
         "quotemark": [true, "single"],
-        "member-access": false
+        "member-access": false,
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }

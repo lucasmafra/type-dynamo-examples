@@ -4,7 +4,7 @@ import { buildResponse } from './build-response'
 
 export const createTodo: Handler = async (event: APIGatewayEvent) => {
     const {title} = JSON.parse(event.body)
-    const todo = await saveTodo({title, completed: false})
+    const todo = await saveTodo(title)
     return buildResponse(200, 'Todo created with success!', todo)
 }
 

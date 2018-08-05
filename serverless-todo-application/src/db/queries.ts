@@ -1,4 +1,4 @@
-import { isEqualTo, match, Omit } from 'type-dynamo'
+import { isEqualTo, match } from 'type-dynamo'
 import { v4 as generateId } from 'uuid'
 import { Todo } from '../models/todo'
 import { TodoRepository } from './todo'
@@ -13,8 +13,8 @@ export const update = async (id: string, input: Partial<Todo>) => {
     return todo
 }
 
-export const saveTodo = async (input: Omit<Todo, 'id'>) => {
-    const { data: todo } = await TodoRepository.save({ id: generateId(), ...input }).execute()
+export const saveTodo = async (title: string) => {
+    const { data: todo } = await TodoRepository.save({ id: generateId(), title, completed: false }).execute()
     return todo
 }
 
