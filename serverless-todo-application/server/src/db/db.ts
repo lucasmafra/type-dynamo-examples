@@ -1,6 +1,6 @@
 import { TypeDynamo } from 'type-dynamo'
 
 export const db = new TypeDynamo({
-    region: 'localhost',
-    endpoint: 'http://localhost:8000'
+    region: process.env.REGION,
+    endpoint: process.env.DYNAMO_ENDPOINT
 })

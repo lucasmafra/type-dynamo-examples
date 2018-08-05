@@ -1,7 +1,6 @@
 service:
-  name: aws-nodejs-typescript
+  name: type-dynamo-serverless-example
 
-# Add the serverless-webpack plugin
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
@@ -10,7 +9,15 @@ plugins:
 provider:
   name: aws
   runtime: nodejs8.10
-
+  environment:
+      REGION: ${file(.env.yml):${opt:stage, 'dev'}.REGION}
+      DYNAMO_ENDPOINT: ${file(.env.yml):${opt:stage, 'dev'}.DYNAMO_ENDPOINT}
+  iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource:
+          - "*"
 functions:
   createTodo:
     handler: src/api/handlers.createTodo
@@ -48,7 +55,6 @@ functions:
               - http:
                   method: delete
                   path: todo/completed
-
 
 resources:
   Resources:
