@@ -28,7 +28,7 @@ functions:
         handler: src/api/handlers.updateTodo
         events:
           - http:
-              method: patch
+              method: put
               path: todo/{id}
   deleteTodo:
           handler: src/api/handlers.deleteTodo
@@ -36,6 +36,19 @@ functions:
             - http:
                 method: delete
                 path: todo/{id}
+  toggleAllTodos:
+          handler: src/api/handlers.toggleAllTodos
+          events:
+            - http:
+                method: put
+                path: todo/toggleAll
+  deleteCompletedTodos:
+            handler: src/api/handlers.deleteCompletedTodos
+            events:
+              - http:
+                  method: delete
+                  path: todo/completed
+
 
 resources:
   Resources:

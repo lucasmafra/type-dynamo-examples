@@ -3,6 +3,7 @@ import './App.css';
 import {TodoListItem} from "./TodoListItem";
 import {Footer} from "./Footer";
 import {TodoItem} from "./TodoItem";
+import {repository} from "./repository";
 
 class App extends Component {
     ALL_TODOS = 'all';
@@ -17,52 +18,17 @@ class App extends Component {
         todos: []
     }
 
+    async componentDidMount() {
+        this.getTodos()
+    }
+
+    getTodos = async() => {
+        const todos = await repository.getTodos()
+        this.setState({ todos })
+    }
+
     handleChange = (event) => {
         this.setState({newTodo: event.target.value});
-    }
-
-    repositoryAddTodo = (val) => {
-        const { todos } = this.state
-        const id = todos.length + 1
-        const todo = { id, title: val, completed: false }
-        todos.push(todo)
-        this.setState({ todos: todos })
-    }
-
-    repositoryToggleAll = (checked) => {
-        const { todos } = this.state
-        const toggleTodos = todos.map((todo) => ({ ...todo, completed: checked }))
-        this.setState({ todos: toggleTodos })
-    }
-
-    repositoryClearCompleted = () => {
-        const { todos } = this.state
-        const notCompleted = (todo) => !todo.completed
-        const activeTodos = todos.filter(notCompleted)
-        this.setState({ todos: activeTodos })
-    }
-
-    repositoryToggle = (todoToToggle) => {
-        const { todos } = this.state
-        const todo = todos.find((todo) => todo.id === todoToToggle.id)
-        todo.completed = !todoToToggle.completed
-        this.setState({ todos: todos })
-    }
-
-    repositorySave = (todoToSave, text) => {
-        const { todos } = this.state
-        const todo = todos.find((todo) => todo.id === todoToSave.id)
-        todo.title = text
-        this.setState({ todos: todos })
-    }
-
-    repositoryDestroy = (todo) => {
-        const todos = this.state.todos.filter((t) => todo.id !== t.id)
-        this.setState({ todos: todos })
-    }
-
-    repositoryGetTodos = () => {
-        return this.state.todos
     }
 
     handleNewTodoKeyDown = (event) => {
@@ -75,22 +41,25 @@ class App extends Component {
         var val = this.state.newTodo.trim();
 
         if (val) {
-            this.repositoryAddTodo(val);
+            repository.addTodo(val).then(() => this.getTodos());
             this.setState({newTodo: ''});
         }
     }
 
     toggleAll = (event) => {
         const checked = event.target.checked;
-        this.repositoryToggleAll(checked);
+        repository.toggleAllTodosTo(checked).then(() => this.getTodos())
     }
 
     toggle = (todoToToggle) => {
-        this.repositoryToggle(todoToToggle);
+        repository.updateTodo({
+            ...todoToToggle,
+            completed: !todoToToggle.completed
+        }).then(() => this.getTodos())
     }
 
-    destroy = (todo) => {
-        this.repositoryDestroy(todo);
+    destroy = (todoToDelete) => {
+        repository.deleteTodo(todoToDelete).then(() => this.getTodos());
     }
 
     edit = (todo) => {
@@ -98,7 +67,10 @@ class App extends Component {
     }
 
     save = (todoToSave, text) => {
-        this.repositorySave(todoToSave, text);
+        repository.updateTodo({
+            ...todoToSave,
+            title: text
+        }).then(() => this.getTodos());
         this.setState({editing: null});
     }
 
@@ -107,7 +79,7 @@ class App extends Component {
     }
 
     clearCompleted = () => {
-        this.repositoryClearCompleted();
+        repository.deleteCompletedTodos().then(() => this.getTodos());
     }
 
     updateShowing = (showing) => () => {
@@ -117,7 +89,7 @@ class App extends Component {
     }
 
     render = () => {
-        const todos = this.repositoryGetTodos();
+        const todos = this.state.todos;
         const shownTodos = todos.filter((todo) => {
             switch (this.state.nowShowing) {
                 case this.ACTIVE_TODOS:

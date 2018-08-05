@@ -1,29 +1,64 @@
 import { APIGatewayEvent, Handler } from 'aws-lambda'
-import { TodoRepository } from '../db/todo'
-import { v4 as generateId } from 'uuid'
 import { buildResponse } from './build-response'
-import { TodoStatus } from '../models/todo'
+import { getTodosWhere, saveTodo, updateTodos, getAllTodos, update, destroyTodo, deleteTodos } from '../db/queries'
 
 export const createTodo: Handler = async (event: APIGatewayEvent) => {
-  const { name } = JSON.parse(event.body)
-  const { data: todo } = await TodoRepository.save({ id: generateId(), name, status: TodoStatus.ACTIVE }).execute()
-  return buildResponse(200, 'Todo created with success!', todo)
+    try {
+        const { title } = JSON.parse(event.body)
+        const todo = await saveTodo({ title, completed: false })
+        return buildResponse(200, 'Todo created with success!', todo)
+    } catch (err) {
+        return buildResponse(500, 'Internal Server Error', { error: err.message })
+    }
 }
 
 export const getTodos: Handler = async () => {
-  const { data: todos } = await TodoRepository.find().allResults().execute()
-  return buildResponse(200, undefined, todos)
+    try {
+        const todos = await getAllTodos()
+        return buildResponse(200, undefined, todos)
+    } catch (err) {
+        return buildResponse(500, 'Internal Server Error', { error: err.message })
+    }
 }
 
 export const updateTodo: Handler = async (event: APIGatewayEvent) => {
-  const id = event.pathParameters['id']
-  const { status } = JSON.parse(event.body)
-  const { data: todo } = await TodoRepository.update({ id, status }).execute()
-  return buildResponse(200, 'Todo updated with success!', todo)
+    try {
+        const id = event.pathParameters['id']
+        const { title, completed } = JSON.parse(event.body)
+        const todo = await update(id, { title, completed })
+        return buildResponse(200, 'Todo updated with success!', todo)
+    } catch (err) {
+        return buildResponse(500, 'Internal Server Error', { error: err.message })
+    }
 }
 
 export const deleteTodo: Handler = async (event: APIGatewayEvent) => {
-    const id = event.pathParameters['id']
-    const { data: todo } = await TodoRepository.delete({ id }).execute()
-    return buildResponse(200, 'Todo deleted with success!', todo)
+    try {
+        const id = event.pathParameters['id']
+        const todo = await destroyTodo(id)
+        return buildResponse(200, 'Todo deleted with success!', todo)
+    } catch (err) {
+        return buildResponse(500, 'Internal Server Error', { error: err.message })
+    }
+}
+
+export const toggleAllTodos: Handler = async (event: APIGatewayEvent) => {
+    try {
+        const { completed } = JSON.parse(event.body)
+        const todosToUpdate = await getTodosWhere({ completed: !completed })
+        await updateTodos(todosToUpdate, { completed })
+        return buildResponse(200, 'Todos updated with success!')
+    } catch (err) {
+        return buildResponse(500, 'Internal Server Error', { error: err.message })
+    }
+}
+
+export const deleteCompletedTodos: Handler = async (event: APIGatewayEvent) => {
+    try {
+        const todosToDelete = await getTodosWhere({ completed: true })
+        await deleteTodos(todosToDelete)
+        return buildResponse(200, 'Todos deleted with success!')
+    } catch (err) {
+        return buildResponse(500, 'Internal Server Error', { error: err.message })
+    }
 }

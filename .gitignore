@@ -1,3 +1,5 @@
+.idea
+
 # package directories
 serverless-todo-application/server/node_modules
 serverless-todo-application/server/jspm_packages
