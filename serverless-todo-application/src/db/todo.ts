@@ -1,7 +1,7 @@
-import { db } from './db'
 import { Todo } from '../models/todo'
+import { db } from './db'
 
 export const TodoRepository = db.define(Todo, {
+    partitionKey: 'id',
     tableName: 'TodoTable',
-    partitionKey: 'id'
 })
