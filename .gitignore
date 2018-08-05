@@ -10,3 +10,27 @@ serverless-todo-application/server/.webpack
 
 # IDE
 serverless-todo-application/server/.idea
+
+
+
+
+
+# dependencies
+serverless-todo-application/client/node_modules
+
+# testing
+serverless-todo-application/client/coverage
+
+# production
+serverless-todo-application/client/build
+
+# misc
+serverless-todo-application/client/.DS_Store
+serverless-todo-application/client/.env.local
+serverless-todo-application/client/.env.development.local
+serverless-todo-application/client/.env.test.local
+serverless-todo-application/client/.env.production.local
+serverless-todo-application/client/npm-debug.log*
+serverless-todo-application/client/yarn-debug.log*
+serverless-todo-application/client/yarn-error.log*
+
