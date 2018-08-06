@@ -3,7 +3,10 @@ This is a simple Todo Application example built upon [Serverless](https://server
 It exposes a set of simple REST endpoints that query and write data into DynamoDB.
 
 ## Running
-To run this project, make sure you have the Serverless library globally installed
+To run this project, make sure you have the Serverless library globally installed. If you don't, you can run:
+```sh
+yarn global add serverless # or npm install -g serverless
+```
 
 Clone the project, open a terminal in the project root folder and run:
 ```sh
