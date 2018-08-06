@@ -5,7 +5,7 @@ import { TodoRepository } from './todo'
 
 export const getAllTodos = async () => {
     const { data: todos } = await TodoRepository.find().allResults().execute()
-    return todos
+    return todos.sort((a, b) => a.createdAt <= b.createdAt ? -1 : 1)
 }
 
 export const update = async (id: string, input: Partial<Todo>) => {
@@ -14,7 +14,9 @@ export const update = async (id: string, input: Partial<Todo>) => {
 }
 
 export const saveTodo = async (title: string) => {
-    const { data: todo } = await TodoRepository.save({ id: generateId(), title, completed: false }).execute()
+    const { data: todo } = await TodoRepository.save({
+        id: generateId(), title, completed: false, createdAt: new Date().getTime(),
+    }).execute()
     return todo
 }
 
