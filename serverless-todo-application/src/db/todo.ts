@@ -4,4 +4,4 @@ import { db } from './db'
 export const TodoRepository = db.define(Todo, {
     tableName: 'TodoTable',
     partitionKey: 'id',
-})
+}).getInstance()
